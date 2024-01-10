@@ -30,7 +30,7 @@ def create_sd_card_backup(source_path, nas_ip, nas_username, nas_password, nas_f
 
 if __name__ == "__main__":
     if len(sys.argv) != 5:
-        print("Usage: python script.py [source_path] <nas_ip> <nas_username> <nas_password> <nas_folder>")
+        print("Usage: python app.py [source_path] <nas_ip> <nas_username> <nas_password> <nas_folder>")
         sys.exit(1)
 
     sd_card_source = sys.argv[1] if len(sys.argv) == 6 else None
