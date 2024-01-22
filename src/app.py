@@ -4,11 +4,14 @@ from crontab import CronTab
 
 MAX_BACKUPS = 2  # Default value, can be adjusted
 
+
 def info_log(message):
     print(f"[INFO] {message}")
 
+
 def warning_log(message):
     print(f"[WARNING] {message}")
+
 
 def add_to_sudoers():
     info_log("Configuring sudoers file...")
@@ -20,6 +23,7 @@ def add_to_sudoers():
         info_log("Sudoers file configured successfully.")
     else:
         warning_log("Failed to configure sudoers file.")
+
 
 def install_dependencies():
     info_log("Installing dependencies...")
@@ -53,6 +57,7 @@ def install_dependencies():
     else:
         warning_log(f"Failed to download or move pishrink.sh.")
 
+
 def backup_raspberry_pi():
     info_log("Backing up Raspberry Pi...")
 
@@ -85,6 +90,7 @@ def backup_raspberry_pi():
     else:
         warning_log("Failed to run pishrink.sh.")
 
+
 def setup_cronjob():
     info_log("Setting up cronjob for option 2...")
 
@@ -101,6 +107,7 @@ def setup_cronjob():
     cron.write()
 
     info_log(f"Cronjob added. Schedule: {cron_schedule}")
+
 
 def manage_backups(hostname, max_backups):
     backup_dir = f"/home/{os.getlogin()}/backup-raspis/"
@@ -121,6 +128,7 @@ def manage_backups(hostname, max_backups):
             backup_path = os.path.join(backup_dir, backup)
             os.remove(backup_path)
             info_log(f"Deleted old backup: {backup_path}")
+
 
 def main():
     while True:
@@ -151,6 +159,7 @@ def main():
             break
         else:
             print("Invalid choice. Please try again.")
+
 
 if __name__ == "__main__":
     main()
