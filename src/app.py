@@ -1,6 +1,7 @@
 import os
 import datetime
 import sys
+from crontab import CronTab
 
 MAX_BACKUPS = 2  # Default value, can be adjusted
 
@@ -39,7 +40,7 @@ def install_dependencies():
         warning_log("Failed to install cifs-utils.")
 
     # Install python dependencies
-    exit_code = os.system("sudo pip install .")
+    exit_code = os.system("sudo pip install python-crontab")
     if exit_code == 0:
         info_log("Successfully installed the project dependencies.")
     else:
@@ -103,18 +104,19 @@ def setup_cronjob(cron_schedule):
     script_path = os.path.abspath(__file__)
 
     # Add the cron job for option 2 with output redirection
-    cron_command = f"{cron_schedule} sudo python3 {script_path} backup_raspberry_pi && sudo python3 {script_path} manage_backups >> ~/backup-raspis/{os.uname().nodename}.txt 2>&1"
+    cron_command = f"sudo python3 {script_path} backup_raspberry_pi && sudo python3 {script_path} manage_backups"
 
     # Use a specific log file path or /dev/null if you don't need the output
     # Replace /path/to/logfile with the desired log file path
 
-    # Combine existing cron jobs with the new one
-    current_cron = os.popen(f"crontab -l").read().strip()
-    updated_cron = f"{current_cron}\n{cron_command}\n"
+    # Create a new cron tab
+    cron = CronTab(user=username)
 
-    # Write the updated cron jobs back
-    with os.popen(f"echo '{updated_cron}' | crontab -", "w") as crontab:
-        crontab.write(updated_cron)
+    # Add the cron job for option 2
+    job = cron.new(command=cron_command, comment="Backup Raspberry Pi")
+    job.setall(cron_schedule)
+
+    cron.write()
 
     info_log(f"Cronjob added. Schedule: {cron_schedule}")
 
