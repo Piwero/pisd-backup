@@ -2,8 +2,6 @@ import os
 import datetime
 import sys
 
-from crontab import CronTab
-
 MAX_BACKUPS = 2  # Default value, can be adjusted
 
 
@@ -95,11 +93,8 @@ def backup_raspberry_pi():
         warning_log("Failed to run pishrink.sh.")
 
 
-def setup_cronjob():
+def setup_cronjob(cron_schedule):
     info_log("Setting up cronjob for option 2...")
-
-    # Prompt user for custom cron schedule
-    cron_schedule = input("Enter the custom cron schedule (e.g., '0 2 * * *'): ")
 
     # Get the current user's username
     username = os.getlogin()
@@ -132,7 +127,6 @@ def manage_backups(hostname, max_backups):
     host_backups = [f for f in backups if f.startswith(hostname)]
 
     # Sort backups by modification time (oldest first)
-    host_backups
     host_backups.sort(key=lambda f: os.path.getmtime(os.path.join(backup_dir, f)))
 
     # Keep only the latest max_backups backups
@@ -155,7 +149,9 @@ def main():
         elif action == "backup_raspberry_pi":
             backup_raspberry_pi()
         elif action == "setup_cronjob":
-            setup_cronjob()
+            # Prompt user for custom cron schedule
+            cron_schedule = input("Enter the custom cron schedule (e.g., '0 2 * * *'): ")
+            setup_cronjob(cron_schedule)
         elif action == "manage_backups":
             # Check if an additional argument is provided for the number of backups
             manage_backups_input = sys.argv[2] if len(sys.argv) > 2 else None
@@ -187,7 +183,9 @@ def main():
             elif choice == "2":
                 backup_raspberry_pi()
             elif choice == "3":
-                setup_cronjob()
+                # Prompt user for custom cron schedule
+                cron_schedule = input("Enter the custom cron schedule (e.g., '0 2 * * *'): ")
+                setup_cronjob(cron_schedule)
             elif choice == "4":
                 manage_backups_input = input("Enter the number of backups to keep: ")
                 try:
