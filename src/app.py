@@ -1,5 +1,6 @@
 import os
 import datetime
+from crontab import CronTab
 
 def info_log(message):
     print(f"[INFO] {message}")
@@ -30,6 +31,13 @@ def install_dependencies():
         info_log("cifs-utils installed.")
     else:
         warning_log("Failed to install cifs-utils.")
+
+    # Install python-crontab
+    exit_code = os.system("pip install python-crontab")
+    if exit_code == 0:
+        info_log("python-crontab installed.")
+    else:
+        warning_log("Failed to install python-crontab.")
 
     # Create an empty file .smbServer in /root/
     smb_server_path = "/root/.smbServer"
@@ -73,11 +81,29 @@ def backup_raspberry_pi():
     else:
         warning_log("Failed to run pishrink.sh.")
 
+def setup_cronjob():
+    info_log("Setting up cronjob for option 2...")
+
+    # Get the current user's crontab
+    cron = CronTab(user=os.getlogin())
+
+    # Prompt user for custom cron schedule
+    cron_schedule = input("Enter the custom cron schedule (e.g., '0 2 * * *'): ")
+
+    # Add the cron job for option 2
+    job = cron.new(command=f"sudo python3 {__file__} backup_raspberry_pi", comment="Backup Raspberry Pi")
+    job.setall(cron_schedule)
+
+    cron.write()
+
+    info_log(f"Cronjob added. Schedule: {cron_schedule}")
+
 def main():
     while True:
         print("Choose an option:")
         print("1. Install dependencies")
         print("2. Backup Raspberry Pi")
+        print("3. Setup cronjob for option 2")
         print("0. Exit")
 
         choice = input("Enter your choice: ")
@@ -86,6 +112,8 @@ def main():
             install_dependencies()
         elif choice == "2":
             backup_raspberry_pi()
+        elif choice == "3":
+            setup_cronjob()
         elif choice == "0":
             break
         else:
