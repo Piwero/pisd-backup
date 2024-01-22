@@ -7,7 +7,7 @@ readme = "README.md"
 requires-python = ">=3.11"
 
 dependencies = [
-    "python-crontab=3.0.0"
+    "python-crontab"
     ]
 
 [project.optional-dependencies]
@@ -56,4 +56,4 @@ line-length = 120
 
 [build-system]
 requires = ["setuptools=63.0"]
-build-backend = "setuptools.bu
+build-backend = "setuptools.build_meta"
