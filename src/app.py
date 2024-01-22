@@ -17,7 +17,7 @@ def add_to_sudoers():
     info_log("Configuring sudoers file...")
 
     # Run the add_to_sudoers.sh script with sudo
-    exit_code = os.system("sudo bash add_to_sudoers.sh")
+    exit_code = os.system("sudo bash src/scripts/add_sudoers_privileges.sh")
 
     if exit_code == 0:
         info_log("Sudoers file configured successfully.")
