@@ -34,13 +34,6 @@ def install_dependencies():
     else:
         warning_log("Failed to install cifs-utils.")
 
-    # Install python-crontab
-    exit_code = os.system("pip install python-crontab")
-    if exit_code == 0:
-        info_log("python-crontab installed.")
-    else:
-        warning_log("Failed to install python-crontab.")
-
     # Create an empty file .smbServer in /root/
     smb_server_path = "/root/.smbServer"
     exit_code = os.system(f"sudo touch {smb_server_path}")

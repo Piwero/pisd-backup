@@ -6,6 +6,10 @@ authors = [{name="Jose Ignacio Piñero", email="piwero@gmail.com"}]
 readme = "README.md"
 requires-python = ">=3.11"
 
+dependencies = [
+    "python-crontab=3.0.0"
+    ]
+
 [project.optional-dependencies]
 dev = [
     "black=23.3.0",
