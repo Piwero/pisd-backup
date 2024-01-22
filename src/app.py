@@ -38,6 +38,13 @@ def install_dependencies():
     else:
         warning_log("Failed to install cifs-utils.")
 
+    # Install python dependencies
+    exit_code = os.system("sudo pip install .")
+    if exit_code == 0:
+        info_log("Successfully installed the project dependencies.")
+    else:
+        warning_log("Failed to install project dependencies.")
+
     # Create an empty file .smbServer in /root/
     smb_server_path = "/root/.smbServer"
     exit_code = os.system(f"sudo touch {smb_server_path}")
@@ -56,6 +63,7 @@ def install_dependencies():
         info_log(f"Downloaded pishrink.sh and moved it to {pishrink_path}.")
     else:
         warning_log(f"Failed to download or move pishrink.sh.")
+
 
 
 def backup_raspberry_pi():
