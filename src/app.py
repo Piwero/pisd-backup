@@ -48,9 +48,9 @@ def main():
         choice = input("Enter your choice: ")
 
         if choice == "1":
-            install_dependencies()
+            os.system("sudo python3 " + __file__ + " install_dependencies")
         elif choice == "2":
-            backup_raspberry_pi()
+            os.system("sudo python3 " + __file__ + " backup_raspberry_pi")
         elif choice == "0":
             break
         else:
