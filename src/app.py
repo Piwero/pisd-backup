@@ -101,7 +101,7 @@ def setup_cronjob():
     cron_schedule = input("Enter the custom cron schedule (e.g., '0 2 * * *'): ")
 
     # Add the cron job for option 2
-    job = cron.new(command=f"sudo python3 {__file__} backup_raspberry_pi", comment="Backup Raspberry Pi")
+    job = cron.new(command=f"sudo python3 {__file__} backup_raspberry_pi && sudo python3 {__file__} manage_backups", comment="Backup Raspberry Pi")
     job.setall(cron_schedule)
 
     cron.write()
