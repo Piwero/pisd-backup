@@ -1,5 +1,7 @@
 import os
 import datetime
+import sys
+
 from crontab import CronTab
 
 MAX_BACKUPS = 2  # Default value, can be adjusted
@@ -65,17 +67,11 @@ def install_dependencies():
         warning_log(f"Failed to download or move pishrink.sh.")
 
 
-
 def backup_raspberry_pi():
     info_log("Backing up Raspberry Pi...")
 
-    # Prompt user for the number of backups to keep
-    max_backups = input("Enter the maximum number of backups to keep: ")
-    try:
-        max_backups = int(max_backups)
-    except ValueError:
-        warning_log("Invalid input for maximum backups. Using default value.")
-        max_backups = MAX_BACKUPS
+    # Set a default value for max_backups
+    max_backups = MAX_BACKUPS
 
     # Set the backup filename based on the hostname, current date, hour, and minute
     bk_filename = f"{os.uname().nodename}.{datetime.datetime.now().strftime('%Y%m%d_%H%M')}.img"
@@ -150,34 +146,60 @@ def manage_backups(hostname, max_backups):
 
 
 def main():
-    while True:
-        print("Choose an option:")
-        print("1. Install dependencies")
-        print("2. Backup Raspberry Pi")
-        print("3. Setup cronjob for option 2")
-        print("4. Manage number of backups")
-        print("0. Exit")
+    if len(sys.argv) > 1:
+        # If command-line arguments are provided, execute the specified action
+        action = sys.argv[1]
 
-        choice = input("Enter your choice: ")
-
-        if choice == "1":
+        if action == "install_dependencies":
             install_dependencies()
-        elif choice == "2":
+        elif action == "backup_raspberry_pi":
             backup_raspberry_pi()
-        elif choice == "3":
+        elif action == "setup_cronjob":
             setup_cronjob()
-        elif choice == "4":
-            manage_backups_input = input("Enter the number of backups to keep: ")
+        elif action == "manage_backups":
+            # Check if an additional argument is provided for the number of backups
+            manage_backups_input = sys.argv[2] if len(sys.argv) > 2 else None
             try:
-                manage_backups_max = int(manage_backups_input)
+                manage_backups_max = int(manage_backups_input) if manage_backups_input is not None else MAX_BACKUPS
             except ValueError:
                 warning_log("Invalid input for maximum backups. Using default value.")
                 manage_backups_max = MAX_BACKUPS
             manage_backups(os.uname().nodename, manage_backups_max)
-        elif choice == "0":
-            break
+        elif action == "0":
+            return
         else:
-            print("Invalid choice. Please try again.")
+            print("Invalid action. Please provide a valid action.")
+            return
+    else:
+        # If no command-line arguments are provided, display the interactive menu
+        while True:
+            print("Choose an option:")
+            print("1. Install dependencies")
+            print("2. Backup Raspberry Pi")
+            print("3. Setup cronjob for option 2")
+            print("4. Manage number of backups")
+            print("0. Exit")
+
+            choice = input("Enter your choice: ")
+
+            if choice == "1":
+                install_dependencies()
+            elif choice == "2":
+                backup_raspberry_pi()
+            elif choice == "3":
+                setup_cronjob()
+            elif choice == "4":
+                manage_backups_input = input("Enter the number of backups to keep: ")
+                try:
+                    manage_backups_max = int(manage_backups_input)
+                except ValueError:
+                    warning_log("Invalid input for maximum backups. Using default value.")
+                    manage_backups_max = MAX_BACKUPS
+                manage_backups(os.uname().nodename, manage_backups_max)
+            elif choice == "0":
+                break
+            else:
+                print("Invalid choice. Please try again.")
 
 
 if __name__ == "__main__":
