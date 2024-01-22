@@ -2,19 +2,13 @@
 name = "piSD-backup"
 version = "0.1.0"
 description = "Python app for creating Raspberry Pi SD card images"
-authors = [{name="Jose Ignacio Piñero", email="piwero@gmail.com"}]
+authors = [{ name = "Jose Ignacio Piñero", email = "piwero@gmail.com" }]
 readme = "README.md"
 requires-python = ">=3.11"
 
 dependencies = [
     "python-crontab"
-    ]
-
-[project.optional-dependencies]
-dev = [
-    "black=23.3.0",
-    "pre-commit=3.6.0",
-    "ruff=0.0.291"]
+]
 
 [tool.black]
 line-length = 88
@@ -26,8 +20,8 @@ exclude = '''
 '''
 
 [tool.ruff]
-select = ["E","F","I"]
-ignore = ["E501",]
+select = ["E", "F", "I"]
+ignore = ["E501", ]
 exclude = [
     ".bzr",
     ".direnv",
@@ -51,7 +45,7 @@ exclude = [
     "venv",
     "**/migrations",
     "settings.py"
-	]
+]
 line-length = 120
 
 [build-system]
