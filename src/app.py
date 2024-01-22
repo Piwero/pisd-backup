@@ -2,40 +2,66 @@ import os
 import datetime
 
 
+def info_log(message):
+    print(f"[INFO] {message}")
+
+
+def warning_log(message):
+    print(f"[WARNING] {message}")
+
+
 def install_dependencies():
-    print("Installing dependencies...")
+    info_log("Installing dependencies...")
 
     # Install cifs-utils
-    os.system("sudo apt-get install cifs-utils")
-    print("cifs-utils installed.")
+    exit_code = os.system("sudo apt-get install cifs-utils")
+    if exit_code == 0:
+        info_log("cifs-utils installed.")
+    else:
+        warning_log("Failed to install cifs-utils.")
 
     # Create an empty file .smbServer in /root/
     smb_server_path = "/root/.smbServer"
-    os.system(f"sudo touch {smb_server_path}")
-    print(f"Created {smb_server_path}.")
+    exit_code = os.system(f"sudo touch {smb_server_path}")
+    if exit_code == 0:
+        info_log(f"Created {smb_server_path}.")
+    else:
+        warning_log(f"Failed to create {smb_server_path}.")
 
     # Download pishrink.sh script and move it to /usr/local/bin/
     pishrink_path = "/usr/local/bin/pishrink.sh"
-    os.system("wget https://raw.githubusercontent.com/Drewsif/PiShrink/master/pishrink.sh")
-    os.system("chmod +x pishrink.sh")
-    os.system(f"sudo mv pishrink.sh {pishrink_path}")
-    print(f"Downloaded pishrink.sh and moved it to {pishrink_path}.")
+    exit_code = os.system("wget https://raw.githubusercontent.com/Drewsif/PiShrink/master/pishrink.sh")
+    exit_code += os.system("chmod +x pishrink.sh")
+    exit_code += os.system(f"sudo mv pishrink.sh {pishrink_path}")
+
+    if exit_code == 0:
+        info_log(f"Downloaded pishrink.sh and moved it to {pishrink_path}.")
+    else:
+        warning_log(f"Failed to download or move pishrink.sh.")
 
 
 def backup_raspberry_pi():
-    print("Backing up Raspberry Pi...")
+    info_log("Backing up Raspberry Pi...")
 
     # Set the backup filename based on the hostname, current date, hour, and minute
     bk_filename = f"{os.uname().nodename}.{datetime.datetime.now().strftime('%Y%m%d_%H%M')}.img"
     backup_path = f"/home/{os.getlogin()}/backup-raspis/{bk_filename}"
 
     # Create a backup of the Raspberry Pi using dd
-    os.system(f"sudo dd bs=4M if=/dev/mmcblk0 of={backup_path}")
-    print(f"Created backup: {backup_path}")
+    exit_code = os.system(f"sudo dd bs=4M if=/dev/mmcblk0 of={backup_path}")
+
+    if exit_code == 0:
+        info_log(f"Created backup: {backup_path}")
+    else:
+        warning_log(f"Failed to create backup.")
 
     # Run pishrink.sh on the created backup
-    os.system(f"sudo pishrink.sh {backup_path}")
-    print("Ran pishrink.sh on the backup.")
+    exit_code = os.system(f"sudo pishrink.sh {backup_path}")
+
+    if exit_code == 0:
+        info_log("Ran pishrink.sh on the backup.")
+    else:
+        warning_log("Failed to run pishrink.sh.")
 
 
 def main():
@@ -48,9 +74,9 @@ def main():
         choice = input("Enter your choice: ")
 
         if choice == "1":
-            os.system("sudo python3 " + __file__ + " install_dependencies")
+            install_dependencies()
         elif choice == "2":
-            os.system("sudo python3 " + __file__ + " backup_raspberry_pi")
+            backup_raspberry_pi()
         elif choice == "0":
             break
         else:
