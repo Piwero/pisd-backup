@@ -2,6 +2,8 @@ import os
 import datetime
 from crontab import CronTab
 
+MAX_BACKUPS = 2  # Default value, can be adjusted
+
 def info_log(message):
     print(f"[INFO] {message}")
 
@@ -56,10 +58,18 @@ def install_dependencies():
     if exit_code == 0:
         info_log(f"Downloaded pishrink.sh and moved it to {pishrink_path}.")
     else:
-        warning_log("Failed to download or move pishrink.sh.")
+        warning_log(f"Failed to download or move pishrink.sh.")
 
 def backup_raspberry_pi():
     info_log("Backing up Raspberry Pi...")
+
+    # Prompt user for the number of backups to keep
+    max_backups = input("Enter the maximum number of backups to keep: ")
+    try:
+        max_backups = int(max_backups)
+    except ValueError:
+        warning_log("Invalid input for maximum backups. Using default value.")
+        max_backups = MAX_BACKUPS
 
     # Set the backup filename based on the hostname, current date, hour, and minute
     bk_filename = f"{os.uname().nodename}.{datetime.datetime.now().strftime('%Y%m%d_%H%M')}.img"
@@ -70,8 +80,9 @@ def backup_raspberry_pi():
 
     if exit_code == 0:
         info_log(f"Created backup: {backup_path}")
+        manage_backups(os.uname().nodename, max_backups)
     else:
-        warning_log("Failed to create backup.")
+        warning_log(f"Failed to create backup.")
 
     # Run pishrink.sh on the created backup
     exit_code = os.system(f"sudo pishrink.sh {backup_path}")
@@ -98,12 +109,33 @@ def setup_cronjob():
 
     info_log(f"Cronjob added. Schedule: {cron_schedule}")
 
+def manage_backups(hostname, max_backups):
+    backup_dir = f"/home/{os.getlogin()}/backup-raspis/"
+    backups = [f for f in os.listdir(backup_dir) if os.path.isfile(os.path.join(backup_dir, f))]
+
+    # Filter backups for the current hostname
+    host_backups = [f for f in backups if f.startswith(hostname)]
+
+    # Sort backups by modification time (oldest first)
+    host_backups
+    host_backups.sort(key=lambda f: os.path.getmtime(os.path.join(backup_dir, f)))
+
+    # Keep only the latest max_backups backups
+    if len(host_backups) > max_backups:
+        backups_to_delete = host_backups[:-max_backups]
+
+        for backup in backups_to_delete:
+            backup_path = os.path.join(backup_dir, backup)
+            os.remove(backup_path)
+            info_log(f"Deleted old backup: {backup_path}")
+
 def main():
     while True:
         print("Choose an option:")
         print("1. Install dependencies")
         print("2. Backup Raspberry Pi")
         print("3. Setup cronjob for option 2")
+        print("4. Manage number of backups")
         print("0. Exit")
 
         choice = input("Enter your choice: ")
@@ -114,6 +146,14 @@ def main():
             backup_raspberry_pi()
         elif choice == "3":
             setup_cronjob()
+        elif choice == "4":
+            manage_backups_input = input("Enter the number of backups to keep: ")
+            try:
+                manage_backups_max = int(manage_backups_input)
+            except ValueError:
+                warning_log("Invalid input for maximum backups. Using default value.")
+                manage_backups_max = MAX_BACKUPS
+            manage_backups(os.uname().nodename, manage_backups_max)
         elif choice == "0":
             break
         else:
