@@ -94,17 +94,28 @@ def backup_raspberry_pi():
 def setup_cronjob():
     info_log("Setting up cronjob for option 2...")
 
-    # Get the current user's crontab
-    cron = CronTab(user=os.getlogin())
-
     # Prompt user for custom cron schedule
     cron_schedule = input("Enter the custom cron schedule (e.g., '0 2 * * *'): ")
 
-    # Add the cron job for option 2
-    job = cron.new(command=f"sudo python3 {__file__} backup_raspberry_pi && sudo python3 {__file__} manage_backups", comment="Backup Raspberry Pi")
-    job.setall(cron_schedule)
+    # Get the current user's username
+    username = os.getlogin()
 
-    cron.write()
+    # Get the path to the script
+    script_path = os.path.abspath(__file__)
+
+    # Add the cron job for option 2 with output redirection
+    cron_command = f"{cron_schedule} sudo python3 {script_path} backup_raspberry_pi && sudo python3 {script_path} manage_backups >> ~/backup-raspis/{os.uname().nodename}.txt 2>&1"
+
+    # Use a specific log file path or /dev/null if you don't need the output
+    # Replace /path/to/logfile with the desired log file path
+
+    # Combine existing cron jobs with the new one
+    current_cron = os.popen(f"crontab -l").read().strip()
+    updated_cron = f"{current_cron}\n{cron_command}\n"
+
+    # Write the updated cron jobs back
+    with os.popen(f"echo '{updated_cron}' | crontab -", "w") as crontab:
+        crontab.write(updated_cron)
 
     info_log(f"Cronjob added. Schedule: {cron_schedule}")
 
