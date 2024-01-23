@@ -42,7 +42,7 @@ Replace `100.68.44.33` with the actual IP address of your NAS.
 4. For Dietpi users, run the following command to edit the autostart options:
 
 ```bash
-sudo diet-pi config
+sudo dietpi-config
 ```
 
 Select option `14` for autostart options and add the following line:
