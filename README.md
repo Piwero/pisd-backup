@@ -79,7 +79,4 @@ sudo python3 src/app.py manage_backups [num_backups]
 
 Replace `[num_backups]` with the desired number of backups to keep.
 
-Feel free to customize the script to suit your specific requirements.
 ```
-
-This Markdown document combines both the README and the Python script in a single file. Make sure to copy this content into separate files if needed.
