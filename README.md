@@ -67,7 +67,9 @@ The script provides an interactive menu for various actions:
 To run the script interactively, execute:
 
 ```bash
+pip install .
 sudo python3 src/app.py
+[option 1 to install dependencies]
 ```
 
 You can also use command-line options for specific actions:
