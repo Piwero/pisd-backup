@@ -83,4 +83,6 @@ sudo python3 src/app.py manage_backups [num_backups]
 
 Replace `[num_backups]` with the desired number of backups to keep.
 
-```
+## Extra 
+* To check cronjobs `crontab -l`
+* To edit cronjobs `crontab -e`
