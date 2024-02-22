@@ -104,7 +104,7 @@ def setup_cronjob(cron_schedule):
     script_path = os.path.abspath(__file__)
 
     # Add the cron job for option 2 with output redirection
-    cron_command = f"sudo python3 {script_path} backup_raspberry_pi && sudo python3 {script_path} manage_backups"
+    cron_command = f"sudo mount -a && sudo python3 {script_path} backup_raspberry_pi && sudo python3 {script_path} manage_backups"
 
     # Use a specific log file path or /dev/null if you don't need the output
     # Replace /path/to/logfile with the desired log file path
