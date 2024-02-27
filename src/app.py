@@ -77,7 +77,7 @@ def backup_raspberry_pi():
     backup_path = f"/home/{os.getlogin()}/backup-raspis/{bk_filename}"
 
     # Create a backup of the Raspberry Pi using dd
-    exit_code = os.system(f"sudo dd bs=4M if=/dev/mmcblk0 of={backup_path}")
+    exit_code = os.system(f"sudo mount -a && sudo dd bs=4M if=/dev/mmcblk0 of={backup_path}")
 
     if exit_code == 0:
         info_log(f"Created backup: {backup_path}")
