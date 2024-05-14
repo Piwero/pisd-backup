@@ -53,7 +53,7 @@ sudo mount -a
 
 This ensures that the NAS volume is mounted automatically on system startup.
 
-(You might want to resize the SD card with `sudo sudo dietpi-drive_manager` resize)
+(You might want to resize the SD card with `sudo dietpi-drive_manager` resize)
 
 ## Usage
 
