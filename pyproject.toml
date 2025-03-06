@@ -1,6 +1,6 @@
 [project]
 name = "piSD-backup"
-version = "0.1.0"
+version = "0.0.1"
 description = "Python app for creating Raspberry Pi SD card images"
 authors = [{ name = "Jose Ignacio Piñero", email = "piwero@gmail.com" }]
 readme = "README.md"
@@ -9,6 +9,15 @@ requires-python = ">=3.11"
 dependencies = [
     "python-crontab"
 ]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "License :: OSI Approved :: MIT License",
+]
+
+[project.urls]
+Homepage = "https://github.com/Piwero/pisd-backup"
+Issues = "https://github.com/Piwero/pisd-backup/issues"
 
 [tool.black]
 line-length = 88
