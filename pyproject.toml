@@ -1,6 +1,6 @@
 [project]
-name = "piSD-backup"
-version = "0.0.1"
+name = "pisd-backup"
+version = "0.0.2"
 description = "Python app for creating Raspberry Pi SD card images"
 authors = [{ name = "Jose Ignacio Piñero", email = "piwero@gmail.com" }]
 readme = "README.md"
