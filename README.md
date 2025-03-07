@@ -1,5 +1,5 @@
 
-** piSD-backup - Automated Raspberry Pi SD Card Backup**
+# **piSD-backup** - Automated Raspberry Pi SD Card Backup
 
 **Overview**
 
