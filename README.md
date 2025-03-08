@@ -66,7 +66,7 @@ password=YourSecurePassword
     * **Mount the Share:**
         * execute `sudo mount -a` to mount the newly added fstab entry.
     * **DietPi Users:**
-        * For DietPi users, use `sudo dietpi-config`, select option `9` (Autostart Options), and add `sudo mount -a` to ensure the NAS volume is mounted on startup.
+        * For DietPi users, use `sudo dietpi-config`, select option `9` and `14` (Autostart Options > custom script), and add `sudo mount -a` to ensure the NAS volume is mounted on startup.
         * It is also recommended that after mounting the NAS, to run `sudo dietpi-drive_manager` and use the resize option.
 
 **Usage**
