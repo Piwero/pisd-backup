@@ -45,7 +45,7 @@ sudo python3 src/app.py
         * Create a file named `/root/.smbServer` with your NAS credentials:
 
 ```
-username=backups
+username=pisd-backup
 password=YourSecurePassword
 ```
 
