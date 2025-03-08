@@ -53,12 +53,10 @@ password=YourSecurePassword
     * **Create Backup Directory:**
         * Create a directory on your Raspberry Pi to mount the NAS share:
 
-```bash
-mkdir backup-raspis
-```
+`mkdir backup-raspis`
 
-    * **Edit `/etc/fstab`:**
-        * Add the following line to `/etc/fstab` to automatically mount the NAS share on boot:
+* **Edit `/etc/fstab`:**
+        * Add the following line to `/etc/fstab` to automatically mount the NAS share on boot:    
 
 ```
 //Your.NAS.IP.Address/backup-raspis /home/$USER/backup-raspis cifs credentials=/root/.smbServer,uid=1001 0 0
