@@ -1,6 +1,6 @@
 import os
 
-from src.utils.logger import info_log
+from utils.logger import info_log
 
 MAX_BACKUPS = 2  # Default value, can be adjusted
 

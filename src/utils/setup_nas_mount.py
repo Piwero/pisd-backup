@@ -1,6 +1,6 @@
 import os
 
-from src.utils.logger import info_log, warning_log
+from utils.logger import info_log, warning_log
 
 
 def setup_nas_mount():

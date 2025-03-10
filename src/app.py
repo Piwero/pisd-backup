@@ -1,12 +1,12 @@
 import os
 import sys
 
-from src.utils.backup_raspberry_pi import backup_raspberry_pi
-from src.utils.install_dependencies import install_dependencies
-from src.utils.logger import warning_log
-from src.utils.manage_backups import MAX_BACKUPS, manage_backups
-from src.utils.setup_cronjob import setup_cronjob
-from src.utils.setup_nas_mount import setup_nas_mount
+from utils.backup_raspberry_pi import backup_raspberry_pi
+from utils.install_dependencies import install_dependencies
+from utils.logger import warning_log
+from utils.manage_backups import MAX_BACKUPS, manage_backups
+from utils.setup_cronjob import setup_cronjob
+from utils.setup_nas_mount import setup_nas_mount
 
 
 def main():

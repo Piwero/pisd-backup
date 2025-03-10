@@ -1,8 +1,8 @@
 import datetime
 import os
 
-from src.utils.logger import info_log, warning_log
-from src.utils.manage_backups import MAX_BACKUPS, manage_backups
+from utils.logger import info_log, warning_log
+from utils.manage_backups import MAX_BACKUPS, manage_backups
 
 
 def backup_raspberry_pi():

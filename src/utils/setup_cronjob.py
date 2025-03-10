@@ -2,7 +2,7 @@ import os
 
 from crontab import CronTab
 
-from src.utils.logger import info_log
+from utils.logger import info_log
 
 
 def setup_cronjob(cron_schedule):
