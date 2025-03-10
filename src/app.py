@@ -39,10 +39,10 @@ def main():
         while True:
             print("Choose an option:")
             print("1. Install dependencies")
-            print("2. Backup Raspberry Pi")
+            print("2. Setup NAS mount volume")
             print("3. Setup cronjob for option 2")
             print("4. Manage number of backups")
-            print("5. Setup NAS mount volume")
+            print("5. Backup Raspberry Pi")
             print("0. Exit")
 
             choice = input("Enter your choice: ")
@@ -50,7 +50,7 @@ def main():
             if choice == "1":
                 install_dependencies()
             elif choice == "2":
-                backup_raspberry_pi()
+                setup_nas_mount()
             elif choice == "3":
                 cron_schedule = input("Enter the custom cron schedule (e.g., '0 2 * * *'): ")
                 setup_cronjob(cron_schedule)
@@ -63,7 +63,7 @@ def main():
                     manage_backups_max = MAX_BACKUPS
                 manage_backups(os.uname().nodename, manage_backups_max)
             elif choice == "5":
-                setup_nas_mount()
+                backup_raspberry_pi()
             elif choice == "0":
                 break
             else:
