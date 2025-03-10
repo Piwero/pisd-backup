@@ -40,7 +40,7 @@ def main():
             print("Choose an option:")
             print("1. Install dependencies")
             print("2. Setup NAS mount volume")
-            print("3. Setup cronjob for option 2")
+            print("3. Setup cronjob for option Backup")
             print("4. Manage number of backups")
             print("5. Backup Raspberry Pi")
             print("0. Exit")
