@@ -1,6 +1,6 @@
 import os
 
-from src.app import info_log, warning_log
+from src.utils.logger import info_log, warning_log
 
 
 def add_to_sudoers():

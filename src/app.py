@@ -5,16 +5,9 @@ import sys
 from crontab import CronTab
 
 from src.utils.install_dependencies import install_dependencies
+from src.utils.logger import info_log, warning_log
 
 MAX_BACKUPS = 2  # Default value, can be adjusted
-
-
-def info_log(message):
-    print(f"[INFO] {message}")
-
-
-def warning_log(message):
-    print(f"[WARNING] {message}")
 
 
 def backup_raspberry_pi():
