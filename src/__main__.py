@@ -1,6 +1,7 @@
-import os
 import datetime
+import os
 import sys
+
 from crontab import CronTab
 
 MAX_BACKUPS = 2  # Default value, can be adjusted
@@ -63,7 +64,7 @@ def install_dependencies():
     if exit_code == 0:
         info_log(f"Downloaded pishrink.sh and moved it to {pishrink_path}.")
     else:
-        warning_log(f"Failed to download or move pishrink.sh.")
+        warning_log("Failed to download or move pishrink.sh.")
 
 
 def backup_raspberry_pi():
@@ -83,7 +84,7 @@ def backup_raspberry_pi():
         info_log(f"Created backup: {backup_path}")
         manage_backups(os.uname().nodename, max_backups)
     else:
-        warning_log(f"Failed to create backup.")
+        warning_log("Failed to create backup.")
 
     # Run pishrink.sh on the created backup
     exit_code = os.system(f"sudo pishrink.sh {backup_path}")
