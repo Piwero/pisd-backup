@@ -142,9 +142,54 @@ def manage_backups(hostname, max_backups):
             info_log(f"Deleted old backup: {backup_path}")
 
 
+def setup_nas_mount():
+    info_log("Setting up NAS mount volume...")
+
+    # Get NAS details from user
+    nas_username = input("Enter NAS backup username: ")
+    nas_password = input("Enter NAS backup password: ")
+    nas_ip = input("Enter NAS IP: ")
+
+    creds_path = "/etc/nas-backup-creds"
+    backup_mount_path = f"/home/{os.getlogin()}/backup-raspis"
+    fstab_entry = f"//{nas_ip}/backup-raspis {backup_mount_path} cifs credentials={creds_path},uid=1001 0 0"
+
+    # Write credentials file
+    try:
+        with open(creds_path, "w") as creds_file:
+            creds_file.write(f"username={nas_username}\npassword={nas_password}\n")
+        os.system(f"sudo chmod 600 {creds_path}")
+        info_log(f"NAS credentials saved at {creds_path}.")
+    except Exception as e:
+        warning_log(f"Failed to write NAS credentials: {e}")
+        return
+
+    # Create mount directory
+    os.system(f"mkdir -p {backup_mount_path}")
+
+    # Add to /etc/fstab
+    try:
+        with open("/etc/fstab", "a") as fstab:
+            fstab.write(f"{fstab_entry}\n")
+        info_log("NAS mount entry added to /etc/fstab.")
+    except Exception as e:
+        warning_log(f"Failed to update /etc/fstab: {e}")
+        return
+
+    # Mount all volumes
+    exit_code = os.system("sudo mount -a")
+    if exit_code == 0:
+        info_log(f"NAS volume mounted successfully at {backup_mount_path}.")
+        print(
+            "\nFor DietPi users, use `sudo dietpi-config`, select option `9` and `14` (Autostart Options > custom script), and add `sudo mount -a` to ensure the NAS volume is mounted on startup.")
+        print(
+            "It is also recommended that after mounting the NAS, to run `sudo dietpi-drive_manager` and use the resize option.")
+    else:
+        warning_log("Failed to mount NAS volume. Please check /etc/fstab entries and retry.")
+
+
 def main():
     if len(sys.argv) > 1:
-        # If command-line arguments are provided, execute the specified action
         action = sys.argv[1]
 
         if action == "install_dependencies":
@@ -152,11 +197,9 @@ def main():
         elif action == "backup_raspberry_pi":
             backup_raspberry_pi()
         elif action == "setup_cronjob":
-            # Prompt user for custom cron schedule
             cron_schedule = input("Enter the custom cron schedule (e.g., '0 2 * * *'): ")
             setup_cronjob(cron_schedule)
         elif action == "manage_backups":
-            # Check if an additional argument is provided for the number of backups
             manage_backups_input = sys.argv[2] if len(sys.argv) > 2 else None
             try:
                 manage_backups_max = int(manage_backups_input) if manage_backups_input is not None else MAX_BACKUPS
@@ -164,19 +207,21 @@ def main():
                 warning_log("Invalid input for maximum backups. Using default value.")
                 manage_backups_max = MAX_BACKUPS
             manage_backups(os.uname().nodename, manage_backups_max)
+        elif action == "setup_nas_mount":
+            setup_nas_mount()
         elif action == "0":
             return
         else:
             print("Invalid action. Please provide a valid action.")
             return
     else:
-        # If no command-line arguments are provided, display the interactive menu
         while True:
             print("Choose an option:")
             print("1. Install dependencies")
             print("2. Backup Raspberry Pi")
             print("3. Setup cronjob for option 2")
             print("4. Manage number of backups")
+            print("5. Setup NAS mount volume")
             print("0. Exit")
 
             choice = input("Enter your choice: ")
@@ -186,7 +231,6 @@ def main():
             elif choice == "2":
                 backup_raspberry_pi()
             elif choice == "3":
-                # Prompt user for custom cron schedule
                 cron_schedule = input("Enter the custom cron schedule (e.g., '0 2 * * *'): ")
                 setup_cronjob(cron_schedule)
             elif choice == "4":
@@ -197,6 +241,8 @@ def main():
                     warning_log("Invalid input for maximum backups. Using default value.")
                     manage_backups_max = MAX_BACKUPS
                 manage_backups(os.uname().nodename, manage_backups_max)
+            elif choice == "5":
+                setup_nas_mount()
             elif choice == "0":
                 break
             else:
