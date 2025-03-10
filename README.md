@@ -27,13 +27,13 @@
 * To install the necessary Python dependencies, run the following command:
 
 ```bash
-sudo python3 src/app.py install_dependencies
+sudo python3 src install_dependencies
 ```
 
 * Alternatively, use the interactive menu:
 
 ```bash
-sudo python3 src/app.py
+sudo python3 src
 ```
 
 * Then select option `1` to install dependencies.
@@ -76,7 +76,7 @@ password=YourSecurePassword
 * To use the interactive menu, run:
 
 ```bash
-sudo python3 src/app.py
+sudo python3 src
 ```
 
 * The menu provides the following options:
@@ -91,25 +91,25 @@ sudo python3 src/app.py
     * Install dependencies:
 
 ```bash
-sudo python3 src/app.py install_dependencies
+sudo python3 src install_dependencies
 ```
 
     * Backup Raspberry Pi:
 
 ```bash
-sudo python3 src/app.py backup_raspberry_pi
+sudo python3 src backup_raspberry_pi
 ```
 
     * Setup cron job:
 
 ```bash
-sudo python3 src/app.py setup_cronjob
+sudo python3 src setup_cronjob
 ```
 
     * Manage number of backups:
 
 ```bash
-sudo python3 src/app.py manage_backups [num_backups]
+sudo python3 src manage_backups [num_backups]
 ```
 
 * Replace `[num_backups]` with the desired number of backups to keep.
