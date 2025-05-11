@@ -12,7 +12,7 @@ def setup_cronjob(cron_schedule):
     username = os.getlogin()
 
     # Get the path to the script
-    script_path = os.path.abspath(__file__)
+    script_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'app.py'))
 
     # Add the cron job for option 2 with output redirection
     cron_command = f"sudo mount -a && sudo python3 {script_path} backup_raspberry_pi && sudo python3 {script_path} manage_backups"
